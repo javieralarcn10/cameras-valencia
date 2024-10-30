@@ -43,6 +43,14 @@ app.get("/", (req, res) => {
   res.sendFile("public/index.html", {root: __dirname});
 });
 
+app.get("/favicon.png", (req, res) => {
+  res.sendFile("public/favicon.png", {root: __dirname});
+});
+
+app.get("/icon.png", (req, res) => {
+  res.sendFile("public/icon.png", {root: __dirname});
+});
+
 app.get("/api/cameras", async (req, res) => {
   const cameras = await getCameras();
   res.json(cameras);
