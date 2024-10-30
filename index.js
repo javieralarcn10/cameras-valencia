@@ -3,10 +3,9 @@ const axios = require("axios");
 const fs = require("fs");
 
 const app = express();
-const port = 30049;
+const port = process.env.PORT || 30049;
 
 async function getCameras() {
-  //read the file cameras.json
   const cameras = JSON.parse(fs.readFileSync("cameras.json", "utf8"));
   return cameras.map((camera) => ({
     id: camera.idcamara,
@@ -24,10 +23,6 @@ async function getCameras() {
 
 app.get("/", (req, res) => {
   res.sendFile("public/index.html", {root: __dirname});
-});
-
-app.get("/favicon.png", (req, res) => {
-  res.sendFile("public/favicon.png", {root: __dirname});
 });
 
 app.get("/icon.png", (req, res) => {
