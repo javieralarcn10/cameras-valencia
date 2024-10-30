@@ -4,7 +4,7 @@ const NodeCache = require("node-cache");
 const myCache = new NodeCache({stdTTL: 3600, checkperiod: 120});
 
 const app = express();
-const port = 3000;
+const port = 30049;
 
 const BASE_URL =
   "https://valencia.opendatasoft.com/api/explore/v2.1/catalog/datasets/cameres-trafic-camaras-trafico/records";
@@ -47,4 +47,5 @@ app.get("/api/cameras", async (req, res) => {
   const cameras = await getCameras();
   res.json(cameras);
 });
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
