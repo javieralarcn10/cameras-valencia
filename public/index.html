@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa con Leaflet.js</title>
+    <!-- Incluir la hoja de estilos de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <style>
+        /* Definir el tamaño del mapa */
+        
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #map {
+            height: 100svh;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <!-- Incluir la librería de Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        // Inicializar el mapa
+        var map = L.map('map')
+
+        // Añadir una capa de tiles (mapa base) de OpenStreetMap
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // Obtener las cámaras
+        fetch('/api/cameras').then(res => res.json()).then(cameras => {
+            cameras.forEach((camara, index) => {
+                const marker = L.marker([camara.coordinates.lat, camara.coordinates.lon]).addTo(map);
+                marker.bindPopup(`<b>${camara.name || ''}</b><br>Tipo: ${camara.type || 'Sin tipo'}${camara.isTunnel ? ' (Túnel)' : ''} <br><br><a href="${camara.vlcUrl}" target="_blank">Abrir en VLC</a>`);
+                if (index === 0) {
+                    map.setView([39.473866595144266, -0.3644213065351017], 13.5);
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>
